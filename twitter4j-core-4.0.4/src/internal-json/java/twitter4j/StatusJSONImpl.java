@@ -16,12 +16,12 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import static twitter4j.ParseUtil.getDate;
 
 import java.util.Arrays;
 import java.util.Date;
 
-import static twitter4j.ParseUtil.getDate;
+import twitter4j.conf.Configuration;
 
 /**
  * A data class representing one single status of a user.
@@ -67,8 +67,6 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 	private Status quotedStatus;
 	private long quotedStatusId = -1L;
 
-	private String twitterJson;
-
 	public StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
 		super(res);
 		JSONObject json = res.asJSONObject();
@@ -98,7 +96,6 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 	}
 
 	private void init(JSONObject json) throws TwitterException {
-		twitterJson = json.toString();
 		id = ParseUtil.getLong("id", json);
 		source = ParseUtil.getUnescapedString("source", json);
 		createdAt = getDate("created_at", json);
@@ -475,11 +472,4 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 				+ quotedStatus + '}';
 	}
 
-	public String getTwitterJson() {
-		return twitterJson;
-	}
-
-	public void setTwitterJson(String twitterJson) {
-		this.twitterJson = twitterJson;
-	}
 }
