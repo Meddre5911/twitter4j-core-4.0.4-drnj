@@ -36,21 +36,21 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 			if (json.has("video_info")) {
 				JSONObject videoInfo = json.getJSONObject("video_info");
 				JSONArray aspectRatio = videoInfo.getJSONArray("aspect_ratio");
-				this.videoAspectRatioWidth = aspectRatio.getInt(0);
-				this.videoAspectRatioHeight = aspectRatio.getInt(1);
+				this.setVideoAspectRatioWidth(aspectRatio.getInt(0));
+				this.setVideoAspectRatioHeight(aspectRatio.getInt(1));
 
 				// not in animated_gif
 				if (!videoInfo.isNull("duration_millis")) {
-					this.videoDurationMillis = videoInfo.getLong("duration_millis");
+					this.setVideoDurationMillis(videoInfo.getLong("duration_millis"));
 				}
 
 				JSONArray variants = videoInfo.getJSONArray("variants");
-				this.videoVariants = new Variant[variants.length()];
+				this.setVideoVariants(new Variant[variants.length()]);
 				for (int i = 0; i < variants.length(); i++) {
-					this.videoVariants[i] = new Variant(variants.getJSONObject(i));
+					this.getVideoVariants()[i] = new Variant(variants.getJSONObject(i));
 				}
 			} else {
-				this.videoVariants = new Variant[0];
+				this.setVideoVariants(new Variant[0]);
 			}
 
 		} catch (JSONException jsone) {
@@ -90,9 +90,9 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 		String url;
 
 		public Variant(JSONObject json) throws JSONException {
-			bitrate = json.has("bitrate") ? json.getInt("bitrate") : 0;
-			contentType = json.getString("content_type");
-			url = json.getString("url");
+			setBitrate(json.has("bitrate") ? json.getInt("bitrate") : 0);
+			setContentType(json.getString("content_type"));
+			setUrl(json.getString("url"));
 		}
 
 		/* For serialization purposes only. */
@@ -123,11 +123,11 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 
 			Variant variant = (Variant) o;
 
-			if (bitrate != variant.bitrate)
+			if (getBitrate() != variant.getBitrate())
 				return false;
-			if (!contentType.equals(variant.contentType))
+			if (!getContentType().equals(variant.getContentType()))
 				return false;
-			if (!url.equals(variant.url))
+			if (!getUrl().equals(variant.getUrl()))
 				return false;
 
 			return true;
@@ -135,15 +135,28 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 
 		@Override
 		public int hashCode() {
-			int result = bitrate;
-			result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
-			result = 31 * result + (url != null ? url.hashCode() : 0);
+			int result = getBitrate();
+			result = 31 * result + (getContentType() != null ? getContentType().hashCode() : 0);
+			result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
 			return result;
 		}
 
 		@Override
 		public String toString() {
-			return "Variant{" + "bitrate=" + bitrate + ", contentType=" + contentType + ", url=" + url + '}';
+			return "Variant{" + "bitrate=" + getBitrate() + ", contentType=" + getContentType() + ", url=" + getUrl()
+					+ '}';
+		}
+
+		public void setBitrate(int bitrate) {
+			this.bitrate = bitrate;
+		}
+
+		public void setContentType(String contentType) {
+			this.contentType = contentType;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
 		}
 	}
 
@@ -156,7 +169,7 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 
 		ExtendedMediaEntityJSONImpl that = (ExtendedMediaEntityJSONImpl) o;
 
-		if (id != that.id)
+		if (getId() != that.getId())
 			return false;
 
 		return true;
@@ -164,15 +177,32 @@ public class ExtendedMediaEntityJSONImpl extends MediaEntityJSONImpl implements 
 
 	@Override
 	public int hashCode() {
-		return (int) (id ^ (id >>> 32));
+		return (int) (getId() ^ (getId() >>> 32));
 	}
 
 	@Override
 	public String toString() {
-		return "ExtendedMediaEntityJSONImpl{" + "id=" + id + ", url=" + url + ", mediaURL=" + mediaURL
-				+ ", mediaURLHttps=" + mediaURLHttps + ", expandedURL=" + expandedURL + ", displayURL='" + displayURL
-				+ '\'' + ", sizes=" + sizes + ", type=" + type + ", videoAspectRatioWidth=" + videoAspectRatioWidth
-				+ ", videoAspectRatioHeight=" + videoAspectRatioHeight + ", videoDurationMillis=" + videoDurationMillis
-				+ ", videoVariants=" + Arrays.toString(videoVariants) + '}';
+		return "ExtendedMediaEntityJSONImpl{" + "id=" + getId() + ", url=" + getUrl() + ", mediaURL=" + getMediaURL()
+				+ ", mediaURLHttps=" + getMediaURLHttps() + ", expandedURL=" + getExpandedURL() + ", displayURL='"
+				+ getDisplayURL() + '\'' + ", sizes=" + getSizes() + ", type=" + getType() + ", videoAspectRatioWidth="
+				+ getVideoAspectRatioWidth() + ", videoAspectRatioHeight=" + getVideoAspectRatioHeight()
+				+ ", videoDurationMillis=" + getVideoDurationMillis() + ", videoVariants=" + Arrays.toString(getVideoVariants())
+				+ '}';
+	}
+
+	public void setVideoAspectRatioWidth(int videoAspectRatioWidth) {
+		this.videoAspectRatioWidth = videoAspectRatioWidth;
+	}
+
+	public void setVideoAspectRatioHeight(int videoAspectRatioHeight) {
+		this.videoAspectRatioHeight = videoAspectRatioHeight;
+	}
+
+	public void setVideoDurationMillis(long videoDurationMillis) {
+		this.videoDurationMillis = videoDurationMillis;
+	}
+
+	public void setVideoVariants(Variant[] videoVariants) {
+		this.videoVariants = videoVariants;
 	}
 }

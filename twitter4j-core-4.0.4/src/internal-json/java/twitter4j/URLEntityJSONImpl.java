@@ -38,9 +38,9 @@ public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 		super();
 		setStart(start);
 		setEnd(end);
-		this.url = url;
-		this.expandedURL = expandedURL;
-		this.displayURL = displayURL;
+		this.setUrl(url);
+		this.setExpandedURL(expandedURL);
+		this.setDisplayURL(displayURL);
 	}
 
 	/* For serialization purposes only. */
@@ -54,21 +54,21 @@ public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 			setStart(indicesArray.getInt(0));
 			setEnd(indicesArray.getInt(1));
 
-			this.url = json.getString("url");
+			this.setUrl(json.getString("url"));
 			if (!json.isNull("expanded_url")) {
 				// sets expandedURL to url if expanded_url is null
 				// http://jira.twitter4j.org/browse/TFJ-704
-				this.expandedURL = json.getString("expanded_url");
+				this.setExpandedURL(json.getString("expanded_url"));
 			} else {
-				this.expandedURL = url;
+				this.setExpandedURL(getUrl());
 			}
 
 			if (!json.isNull("display_url")) {
 				// sets displayURL to url if expanded_url is null
 				// http://jira.twitter4j.org/browse/TFJ-704
-				this.displayURL = json.getString("display_url");
+				this.setDisplayURL(json.getString("display_url"));
 			} else {
-				this.displayURL = url;
+				this.setDisplayURL(getUrl());
 			}
 		} catch (JSONException jsone) {
 			throw new TwitterException(jsone);
@@ -77,12 +77,12 @@ public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
 	@Override
 	public String getText() {
-		return url;
+		return getUrl();
 	}
 
 	@Override
 	public String getURL() {
-		return url;
+		return getUrl();
 	}
 
 	@Override
@@ -114,11 +114,11 @@ public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
 		URLEntityJSONImpl that = (URLEntityJSONImpl) o;
 
-		if (displayURL != null ? !displayURL.equals(that.displayURL) : that.displayURL != null)
+		if (getDisplayURL() != null ? !getDisplayURL().equals(that.getDisplayURL()) : that.getDisplayURL() != null)
 			return false;
-		if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null)
+		if (getExpandedURL() != null ? !getExpandedURL().equals(that.getExpandedURL()) : that.getExpandedURL() != null)
 			return false;
-		if (url != null ? !url.equals(that.url) : that.url != null)
+		if (getUrl() != null ? !getUrl().equals(that.getUrl()) : that.getUrl() != null)
 			return false;
 
 		return true;
@@ -126,15 +126,31 @@ public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
 	@Override
 	public int hashCode() {
-		int result = url != null ? url.hashCode() : 0;
-		result = 31 * result + (expandedURL != null ? expandedURL.hashCode() : 0);
-		result = 31 * result + (displayURL != null ? displayURL.hashCode() : 0);
+		int result = getUrl() != null ? getUrl().hashCode() : 0;
+		result = 31 * result + (getExpandedURL() != null ? getExpandedURL().hashCode() : 0);
+		result = 31 * result + (getDisplayURL() != null ? getDisplayURL().hashCode() : 0);
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "URLEntityJSONImpl{" + "url='" + url + '\'' + ", expandedURL='" + expandedURL + '\'' + ", displayURL='"
-				+ displayURL + '\'' + '}';
+		return "URLEntityJSONImpl{" + "url='" + getUrl() + '\'' + ", expandedURL='" + getExpandedURL() + '\'' + ", displayURL='"
+				+ getDisplayURL() + '\'' + '}';
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setExpandedURL(String expandedURL) {
+		this.expandedURL = expandedURL;
+	}
+
+	public void setDisplayURL(String displayURL) {
+		this.displayURL = displayURL;
 	}
 }

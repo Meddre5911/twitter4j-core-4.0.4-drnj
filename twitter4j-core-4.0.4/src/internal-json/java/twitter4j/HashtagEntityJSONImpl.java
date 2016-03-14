@@ -36,7 +36,7 @@ public class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity,
         super();
         setStart(start);
         setEnd(end);
-        this.text = text;
+        this.setText(text);
     }
 
     /* For serialization purposes only. */
@@ -51,7 +51,7 @@ public class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity,
             setEnd(indicesArray.getInt(1));
 
             if (!json.isNull("text")) {
-                this.text = json.getString("text");
+                this.setText(json.getString("text"));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
@@ -80,20 +80,24 @@ public class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity,
 
         HashtagEntityJSONImpl that = (HashtagEntityJSONImpl) o;
 
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (getText() != null ? !getText().equals(that.getText()) : that.getText() != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return text != null ? text.hashCode() : 0;
+        return getText() != null ? getText().hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "HashtagEntityJSONImpl{" +
-                "text='" + text + '\'' +
+                "text='" + getText() + '\'' +
                 '}';
     }
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

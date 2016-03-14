@@ -24,37 +24,37 @@ import java.util.Map;
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 	private static final long serialVersionUID = 3609683338035442290L;
-	protected long id;
-	protected String url;
-	protected String mediaURL;
-	protected String mediaURLHttps;
-	protected String expandedURL;
-	protected String displayURL;
-	protected Map<Integer, MediaEntity.Size> sizes;
-	protected String type;
+	private long id;
+	private String url;
+	private String mediaURL;
+	private String mediaURLHttps;
+	private String expandedURL;
+	private String displayURL;
+	private Map<Integer, MediaEntity.Size> sizes;
+	private String type;
 
 	MediaEntityJSONImpl(JSONObject json) throws TwitterException {
 		try {
 			JSONArray indicesArray = json.getJSONArray("indices");
 			setStart(indicesArray.getInt(0));
 			setEnd(indicesArray.getInt(1));
-			this.id = ParseUtil.getLong("id", json);
+			this.setId(ParseUtil.getLong("id", json));
 
-			this.url = json.getString("url");
-			this.expandedURL = json.getString("expanded_url");
-			this.mediaURL = json.getString("media_url");
-			this.mediaURLHttps = json.getString("media_url_https");
-			this.displayURL = json.getString("display_url");
+			this.setUrl(json.getString("url"));
+			this.setExpandedURL(json.getString("expanded_url"));
+			this.setMediaURL(json.getString("media_url"));
+			this.setMediaURLHttps(json.getString("media_url_https"));
+			this.setDisplayURL(json.getString("display_url"));
 
 			JSONObject sizes = json.getJSONObject("sizes");
-			this.sizes = new HashMap<Integer, MediaEntity.Size>(4);
+			this.setSizes(new HashMap<Integer, MediaEntity.Size>(4));
 			// thumbworkarounding API side issue
-			addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.LARGE, "large");
-			addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.MEDIUM, "medium");
-			addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.SMALL, "small");
-			addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.THUMB, "thumb");
+			addMediaEntitySizeIfNotNull(this.getSizes(), sizes, MediaEntity.Size.LARGE, "large");
+			addMediaEntitySizeIfNotNull(this.getSizes(), sizes, MediaEntity.Size.MEDIUM, "medium");
+			addMediaEntitySizeIfNotNull(this.getSizes(), sizes, MediaEntity.Size.SMALL, "small");
+			addMediaEntitySizeIfNotNull(this.getSizes(), sizes, MediaEntity.Size.THUMB, "thumb");
 			if (!json.isNull("type")) {
-				this.type = json.getString("type");
+				this.setType(json.getString("type"));
 			}
 
 		} catch (JSONException jsone) {
@@ -91,12 +91,12 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 	@Override
 	public String getText() {
-		return url;
+		return getUrl();
 	}
 
 	@Override
 	public String getURL() {
-		return url;
+		return getUrl();
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 	public static class Size implements MediaEntity.Size {
 		private static final long serialVersionUID = -2515842281909325169L;
-		int width;
+		private int width;
 		int height;
 		int resize;
 
@@ -141,7 +141,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 		}
 
 		public Size(JSONObject json) throws JSONException {
-			width = json.getInt("w");
+			setWidth(json.getInt("w"));
 			height = json.getInt("h");
 			resize = "fit".equals(json.getString("resize")) ? MediaEntity.Size.FIT : MediaEntity.Size.CROP;
 		}
@@ -151,14 +151,26 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 			return width;
 		}
 
+		public void setWidth(int width) {
+			this.width = width;
+		}
+
 		@Override
 		public int getHeight() {
 			return height;
+		}
+		
+		public void setHeight(int height) {
+			this.height = height;
 		}
 
 		@Override
 		public int getResize() {
 			return resize;
+		}
+		
+		public void setResize(int resize) {
+			this.resize = resize;
 		}
 
 		@Override
@@ -174,7 +186,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 				return false;
 			if (resize != size.resize)
 				return false;
-			if (width != size.width)
+			if (getWidth() != size.getWidth())
 				return false;
 
 			return true;
@@ -182,7 +194,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 		@Override
 		public int hashCode() {
-			int result = width;
+			int result = getWidth();
 			result = 31 * result + height;
 			result = 31 * result + resize;
 			return result;
@@ -190,7 +202,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 		@Override
 		public String toString() {
-			return "Size{" + "width=" + width + ", height=" + height + ", resize=" + resize + '}';
+			return "Size{" + "width=" + getWidth() + ", height=" + height + ", resize=" + resize + '}';
 		}
 	}
 
@@ -203,7 +215,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 		MediaEntityJSONImpl that = (MediaEntityJSONImpl) o;
 
-		if (id != that.id)
+		if (getId() != that.getId())
 			return false;
 
 		return true;
@@ -211,13 +223,49 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
 	@Override
 	public int hashCode() {
-		return (int) (id ^ (id >>> 32));
+		return (int) (getId() ^ (getId() >>> 32));
 	}
 
 	@Override
 	public String toString() {
-		return "MediaEntityJSONImpl{" + "id=" + id + ", url=" + url + ", mediaURL=" + mediaURL + ", mediaURLHttps="
-				+ mediaURLHttps + ", expandedURL=" + expandedURL + ", displayURL='" + displayURL + '\'' + ", sizes="
-				+ sizes + ", type=" + type + '}';
+		return "MediaEntityJSONImpl{" + "id=" + getId() + ", url=" + getUrl() + ", mediaURL=" + getMediaURL() + ", mediaURLHttps="
+				+ getMediaURLHttps() + ", expandedURL=" + getExpandedURL() + ", displayURL='" + getDisplayURL() + '\'' + ", sizes="
+				+ getSizes() + ", type=" + getType() + '}';
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setMediaURL(String mediaURL) {
+		this.mediaURL = mediaURL;
+	}
+
+	public void setMediaURLHttps(String mediaURLHttps) {
+		this.mediaURLHttps = mediaURLHttps;
+	}
+
+	public void setExpandedURL(String expandedURL) {
+		this.expandedURL = expandedURL;
+	}
+
+	public void setDisplayURL(String displayURL) {
+		this.displayURL = displayURL;
+	}
+
+	public void setSizes(Map<Integer, MediaEntity.Size> sizes) {
+		this.sizes = sizes;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

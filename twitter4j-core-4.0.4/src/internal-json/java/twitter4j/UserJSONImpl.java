@@ -34,8 +34,8 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
     private String screenName;
     private String location;
     private String description;
-    private URLEntity[] descriptionURLEntities;
-    private URLEntity urlEntity;
+    private URLEntityJSONImpl[] descriptionURLEntities;
+    private URLEntityJSONImpl urlEntity;
     private boolean isContributorsEnabled;
     private String profileImageUrl;
     private String profileImageUrlHttps;
@@ -105,7 +105,7 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
             descriptionURLEntities = getURLEntitiesFromJSON(json, "description");
 
             // urlEntity <=> entities/url/urls[]
-            URLEntity[] urlEntities = getURLEntitiesFromJSON(json, "url");
+            URLEntityJSONImpl[] urlEntities = getURLEntitiesFromJSON(json, "url");
             if (urlEntities.length > 0) {
                 urlEntity = urlEntities[0];
             }
@@ -175,7 +175,7 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
      * @throws JSONException
      * @throws TwitterException
      */
-    private static URLEntity[] getURLEntitiesFromJSON(JSONObject json, String category) throws JSONException, TwitterException {
+    private static URLEntityJSONImpl[] getURLEntitiesFromJSON(JSONObject json, String category) throws JSONException, TwitterException {
         if (!json.isNull("entities")) {
             JSONObject entitiesJSON = json.getJSONObject("entities");
             if (!entitiesJSON.isNull(category)) {
@@ -183,7 +183,7 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
                 if (!descriptionEntitiesJSON.isNull("urls")) {
                     JSONArray urlsArray = descriptionEntitiesJSON.getJSONArray("urls");
                     int len = urlsArray.length();
-                    URLEntity[] urlEntities = new URLEntity[len];
+                    URLEntityJSONImpl[] urlEntities = new URLEntityJSONImpl[len];
                     for (int i = 0; i < len; i++) {
                         urlEntities[i] = new URLEntityJSONImpl(urlsArray.getJSONObject(i));
                     }
@@ -191,7 +191,7 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
                 }
             }
         }
-        return new URLEntity[0];
+        return new URLEntityJSONImpl[0];
     }
 
     @Override
@@ -596,5 +596,165 @@ public final class UserJSONImpl extends TwitterResponseImpl implements User, jav
                 ", withheldInCountries=" + Arrays.toString(withheldInCountries) +
                 '}';
     }
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDescriptionURLEntities(URLEntityJSONImpl[] descriptionURLEntities) {
+		this.descriptionURLEntities = descriptionURLEntities;
+	}
+
+	public void setUrlEntity(URLEntityJSONImpl urlEntity) {
+		this.urlEntity = urlEntity;
+	}
+
+	public void setContributorsEnabled(boolean isContributorsEnabled) {
+		this.isContributorsEnabled = isContributorsEnabled;
+	}
+
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void setProfileImageUrlHttps(String profileImageUrlHttps) {
+		this.profileImageUrlHttps = profileImageUrlHttps;
+	}
+
+	public void setDefaultProfileImage(boolean isDefaultProfileImage) {
+		this.isDefaultProfileImage = isDefaultProfileImage;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setProtected(boolean isProtected) {
+		this.isProtected = isProtected;
+	}
+
+	public void setFollowersCount(int followersCount) {
+		this.followersCount = followersCount;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void setProfileBackgroundColor(String profileBackgroundColor) {
+		this.profileBackgroundColor = profileBackgroundColor;
+	}
+
+	public void setProfileTextColor(String profileTextColor) {
+		this.profileTextColor = profileTextColor;
+	}
+
+	public void setProfileLinkColor(String profileLinkColor) {
+		this.profileLinkColor = profileLinkColor;
+	}
+
+	public void setProfileSidebarFillColor(String profileSidebarFillColor) {
+		this.profileSidebarFillColor = profileSidebarFillColor;
+	}
+
+	public void setProfileSidebarBorderColor(String profileSidebarBorderColor) {
+		this.profileSidebarBorderColor = profileSidebarBorderColor;
+	}
+
+	public void setProfileUseBackgroundImage(boolean profileUseBackgroundImage) {
+		this.profileUseBackgroundImage = profileUseBackgroundImage;
+	}
+
+	public void setDefaultProfile(boolean isDefaultProfile) {
+		this.isDefaultProfile = isDefaultProfile;
+	}
+
+	public void setShowAllInlineMedia(boolean showAllInlineMedia) {
+		this.showAllInlineMedia = showAllInlineMedia;
+	}
+
+	public void setFriendsCount(int friendsCount) {
+		this.friendsCount = friendsCount;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public void setFavouritesCount(int favouritesCount) {
+		this.favouritesCount = favouritesCount;
+	}
+
+	public void setUtcOffset(int utcOffset) {
+		this.utcOffset = utcOffset;
+	}
+
+	public void setTimeZone(String timeZone) {
+		this.timeZone = timeZone;
+	}
+
+	public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
+		this.profileBackgroundImageUrl = profileBackgroundImageUrl;
+	}
+
+	public void setProfileBackgroundImageUrlHttps(String profileBackgroundImageUrlHttps) {
+		this.profileBackgroundImageUrlHttps = profileBackgroundImageUrlHttps;
+	}
+
+	public void setProfileBannerImageUrl(String profileBannerImageUrl) {
+		this.profileBannerImageUrl = profileBannerImageUrl;
+	}
+
+	public void setProfileBackgroundTiled(boolean profileBackgroundTiled) {
+		this.profileBackgroundTiled = profileBackgroundTiled;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public void setStatusesCount(int statusesCount) {
+		this.statusesCount = statusesCount;
+	}
+
+	public void setGeoEnabled(boolean isGeoEnabled) {
+		this.isGeoEnabled = isGeoEnabled;
+	}
+
+	public void setVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+
+	public void setTranslator(boolean translator) {
+		this.translator = translator;
+	}
+
+	public void setListedCount(int listedCount) {
+		this.listedCount = listedCount;
+	}
+
+	public void setFollowRequestSent(boolean isFollowRequestSent) {
+		this.isFollowRequestSent = isFollowRequestSent;
+	}
+
+	public void setWithheldInCountries(String[] withheldInCountries) {
+		this.withheldInCountries = withheldInCountries;
+	}
 
 }

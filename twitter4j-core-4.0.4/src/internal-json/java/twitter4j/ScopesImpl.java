@@ -23,20 +23,24 @@ package twitter4j;
  */
 public class ScopesImpl implements Scopes {
 
-	private final String[] placeIds;
+	private String[] placeIds;
 
 	/* Only for serialization purposes. */
 	public ScopesImpl() {
-		this.placeIds = new String[0];
+		this.setPlaceIds(new String[0]);
 	}
 
 	public ScopesImpl(final String[] placeIds) {
-		this.placeIds = placeIds;
+		this.setPlaceIds(placeIds);
 	}
 
 	@Override
 	public String[] getPlaceIds() {
 		return placeIds;
+	}
+
+	public void setPlaceIds(String[] placeIds) {
+		this.placeIds = placeIds;
 	}
 
 }

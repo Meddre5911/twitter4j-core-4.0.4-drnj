@@ -37,9 +37,9 @@ public class UserMentionEntityJSONImpl extends EntityIndex implements UserMentio
         super();
         setStart(start);
         setEnd(end);
-        this.name = name;
-        this.screenName = screenName;
-        this.id = id;
+        this.setName(name);
+        this.setScreenName(screenName);
+        this.setId(id);
     }
 
     /* For serialization purposes only. */
@@ -54,12 +54,12 @@ public class UserMentionEntityJSONImpl extends EntityIndex implements UserMentio
             setEnd(indicesArray.getInt(1));
 
             if (!json.isNull("name")) {
-                this.name = json.getString("name");
+                this.setName(json.getString("name"));
             }
             if (!json.isNull("screen_name")) {
-                this.screenName = json.getString("screen_name");
+                this.setScreenName(json.getString("screen_name"));
             }
-            id = ParseUtil.getLong("id", json);
+            setId(ParseUtil.getLong("id", json));
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -67,7 +67,7 @@ public class UserMentionEntityJSONImpl extends EntityIndex implements UserMentio
 
     @Override
     public String getText() {
-        return screenName;
+        return getScreenName();
     }
 
     @Override
@@ -102,27 +102,39 @@ public class UserMentionEntityJSONImpl extends EntityIndex implements UserMentio
 
         UserMentionEntityJSONImpl that = (UserMentionEntityJSONImpl) o;
 
-        if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null) return false;
+        if (getId() != that.getId()) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getScreenName() != null ? !getScreenName().equals(that.getScreenName()) : that.getScreenName() != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
-        result = 31 * result + (int) (id ^ (id >>> 32));
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getScreenName() != null ? getScreenName().hashCode() : 0);
+        result = 31 * result + (int) (getId() ^ (getId() >>> 32));
         return result;
     }
 
     @Override
     public String toString() {
         return "UserMentionEntityJSONImpl{" +
-                "name='" + name + '\'' +
-                ", screenName='" + screenName + '\'' +
-                ", id=" + id +
+                "name='" + getName() + '\'' +
+                ", screenName='" + getScreenName() + '\'' +
+                ", id=" + getId() +
                 '}';
     }
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 }
