@@ -66,6 +66,7 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 	private String[] withheldInCountries = null;
 	private Status quotedStatus;
 	private long quotedStatusId = -1L;
+	private String campaign_id;
 
 	public StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
 		super(res);
@@ -108,7 +109,11 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 		retweetCount = ParseUtil.getLong("retweet_count", json);
 		favoriteCount = ParseUtil.getInt("favorite_count", json);
 		isPossiblySensitive = ParseUtil.getBoolean("possibly_sensitive", json);
+
 		try {
+			if (!json.isNull("campaign_id")) {
+				setCampaign_id(json.getString("campaign_id").trim());
+			}
 			if (!json.isNull("user")) {
 				user = new UserJSONImpl(json.getJSONObject("user"));
 			}
@@ -289,6 +294,15 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 	}
 
 	@Override
+	public String getCampaign_id() {
+		return campaign_id;
+	}
+
+	public void setCampaign_id(String campaign_id) {
+		this.campaign_id = campaign_id;
+	}
+
+	@Override
 	public String getInReplyToScreenName() {
 		return inReplyToScreenName;
 	}
@@ -424,6 +438,34 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 			ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
 			for (int i = 0; i < size; i++) {
 				JSONObject json = list.getJSONObject(i);
+				Status status = new StatusJSONImpl(json);
+				if (conf.isJSONStoreEnabled()) {
+					TwitterObjectFactory.registerJSONObject(status, json);
+				}
+				statuses.add(status);
+			}
+			if (conf.isJSONStoreEnabled()) {
+				TwitterObjectFactory.registerJSONObject(statuses, list);
+			}
+			return statuses;
+		} catch (JSONException jsone) {
+			throw new TwitterException(jsone);
+		}
+	}
+
+	/* package */
+	static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf, String campaignId)
+			throws TwitterException {
+		try {
+			if (conf.isJSONStoreEnabled()) {
+				TwitterObjectFactory.clearThreadLocalMap();
+			}
+			JSONArray list = res.asJSONArray();
+			int size = list.length();
+			ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
+			for (int i = 0; i < size; i++) {
+				JSONObject json = list.getJSONObject(i);
+				json.put("campaign_id", campaignId);
 				Status status = new StatusJSONImpl(json);
 				if (conf.isJSONStoreEnabled()) {
 					TwitterObjectFactory.registerJSONObject(status, json);

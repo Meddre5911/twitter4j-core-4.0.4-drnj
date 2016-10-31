@@ -84,6 +84,9 @@ public interface TimelinesResources {
      */
     ResponseList<Status> getUserTimeline(long userId, Paging paging) throws TwitterException;
 
+    
+    ResponseList<Status> getUserTimeline(long userId, Paging paging,String campaignId) throws TwitterException;
+    
     /**
      * Returns the 20 most recent statuses posted from the authenticating user. It's also possible to request another user's timeline via the id parameter.<br>
      * This is the equivalent of the Web / page for your own user, or the profile page for a third party.<br>

@@ -36,6 +36,8 @@ interface ObjectFactory extends java.io.Serializable {
     Status createStatus(HttpResponse res) throws TwitterException;
 
     ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException;
+    
+    ResponseList<Status> createStatusList(HttpResponse res,String campaignId) throws TwitterException;
 
     Trends createTrends(HttpResponse res) throws TwitterException;
 

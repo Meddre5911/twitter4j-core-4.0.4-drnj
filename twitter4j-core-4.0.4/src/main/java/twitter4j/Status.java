@@ -229,4 +229,8 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 4.0.4
      */
     Status getQuotedStatus();
+    
+	String getCampaign_id();
+
+	
 }

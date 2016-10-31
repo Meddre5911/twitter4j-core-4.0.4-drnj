@@ -63,6 +63,11 @@ class JSONImplFactory implements ObjectFactory {
     public ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
         return StatusJSONImpl.createStatusList(res, conf);
     }
+    
+    @Override
+    public ResponseList<Status> createStatusList(HttpResponse res,String campaignId) throws TwitterException {
+        return StatusJSONImpl.createStatusList(res, conf,campaignId);
+    }
 
     /**
      * returns a GeoLocation instance if a "geo" element is found.
