@@ -66,7 +66,7 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 	private String[] withheldInCountries = null;
 	private Status quotedStatus;
 	private long quotedStatusId = -1L;
-	private String campaign_id;
+	private String[] campaign_id;
 
 	public StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
 		super(res);
@@ -112,7 +112,7 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 
 		try {
 			if (!json.isNull("campaign_id")) {
-				setCampaign_id(json.getString("campaign_id").trim());
+				campaign_id = new String[]{json.getString("campaign_id").trim()};
 			}
 			if (!json.isNull("user")) {
 				user = new UserJSONImpl(json.getJSONObject("user"));
@@ -293,14 +293,6 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 		return inReplyToUserId;
 	}
 
-	@Override
-	public String getCampaign_id() {
-		return campaign_id;
-	}
-
-	public void setCampaign_id(String campaign_id) {
-		this.campaign_id = campaign_id;
-	}
 
 	@Override
 	public String getInReplyToScreenName() {
@@ -512,6 +504,11 @@ public final class StatusJSONImpl extends TwitterResponseImpl implements Status,
 				+ ", currentUserRetweetId=" + currentUserRetweetId + ", user=" + user + ", withHeldInCountries="
 				+ Arrays.toString(withheldInCountries) + ", quotedStatusId=" + quotedStatusId + ", quotedStatus="
 				+ quotedStatus + '}';
+	}
+
+	@Override
+	public String[] getCampaign_id() {
+		return campaign_id;
 	}
 
 }

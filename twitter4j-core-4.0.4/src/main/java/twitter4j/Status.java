@@ -230,7 +230,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     Status getQuotedStatus();
     
-	String getCampaign_id();
+	String[] getCampaign_id();
 
 	
 }
