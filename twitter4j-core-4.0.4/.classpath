@@ -9,9 +9,9 @@
 	<classpathentry kind="src" path="src/jmx/java"/>
 	<classpathentry kind="src" path="src/internal-util/java"/>
 	<classpathentry kind="src" path="src/internal-http/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/erdem/Downloads/twitter4j-4.0.4/lib/externalLibs/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/erdem/Downloads/twitter4j-4.0.4/lib/externalLibs/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="/home/erdem/Downloads/twitter4j-4.0.4/lib/externalLibs/slf4j-api-1.7.18.jar"/>
+	<classpathentry kind="lib" path="externalLibs/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="externalLibs/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="externalLibs/slf4j-api-1.7.18.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Home"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
